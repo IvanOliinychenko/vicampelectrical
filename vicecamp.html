@@ -1,0 +1,183 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script src="https://code.jquery.com/jquery-3.3.0.js"
+            integrity="sha256-TFWSuDJt6kS+huV+vVlyV1jM3dwGdeNWqezhTxXB/X8="
+            crossorigin="anonymous"></script>
+    <script src="calc.js"></script>
+
+    <form id="bulbs_form">
+        <fieldset>
+            <legend>Energy consumption calculation</legend>
+            <div id="bulbsCalc">
+                <table style="display: block;overflow-x:auto;">
+                    <thead>
+                        <tr>
+                            <td class="relative">
+                                <div class="description_bulb_wrap">
+
+                                    Light bulb quantity
+                                    <div class="description">Light bulb quantity</div>
+                                </div>
+                            </td>
+                            <td class="relative">
+                                <div class="description_bulb_wrap">
+
+                                    Light bulb power(watts)
+                                    <div class="description">Light bulb power(watts)</div>
+                                </div>
+                            </td>
+                            <td class="relative">
+                                <div class="description_bulb_wrap">
+
+                                    <span style="font-weight: normal; color: #222222;">Time ON during peak (morning, evening)</span>
+                                    <div class="description">Approximately working time per day</div>
+                                </div>
+                            </td>
+                            <td class="relative">
+                                <div class="description_bulb_wrap">
+
+                                    <span style="font-weight: normal; color: #222222;">Time ON off peak (afternoon, night)</span>
+                                    <div class="description">Approximately working time per day</div>
+                                </div>
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><input max="9999" min="1" name="bulbs" required="required" type="number" placeholder="quantity" /></td>
+                            <td><input max="9999" min="1" name="power" required="required" type="number" placeholder="watts" /></td>
+                            <td><input max="11" min="1" name="hours_off_peak" type="number" placeholder="hours" /></td>
+                            <td><input max="13" min="1" name="power_on_peak" type="number" placeholder="hours" /></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button id="add_line" type="button">add line</button> <button id="remove_line" type="button">remove line</button><a class="prices" href="http://www.ontarioenergyboard.ca/oeb/Consumers/Electricity/Electricity%20Prices#tou">Current electricity prices</a>
+
+            </div>
+        </fieldset>
+        &nbsp;
+
+        <button id="bulbs_calc_button" type="button">calculate</button>
+
+        &nbsp;
+
+    </form>
+
+    <h2 class="bulbs_calc_result"></h2>
+
+    <form id="calculation_form">
+        <fieldset>
+            <legend>Basic Load</legend>
+            <div id="basic_load">
+                <div class="main_floor relative">
+
+                    <span class="description_wrap">Floor area </span><input max="999999" min="1" name="floor_area_sqft" type="number" placeholder="sqft" /> or <input max="999999" min="1" name="floor_area_sqm" type="number" placeholder="sqm" />
+                    <div class="description">
+                        <div>All floor areas are inside, actual, floor area measurements</div>
+                    </div><div class="basement_finished relative">
+                        <label><input name="basement_finished" type="checkbox" /><span class="description_wrap">  Basement (finished) </span><input style="display: none;" max="999999" min="1" name="basement_finished_sqft" type="number" placeholder="sqft" /> <span class="or" style="display: none;">or </span><input style="display: none;" max="999999" min="1" name="basement_finished_sqm" type="number" placeholder="sqm" /></label>
+                        <div class="description"></div>
+                    </div>
+                    <div class="basement_unfinished relative">
+
+                        <label><input name="basement_unfinished" type="checkbox" /><span class="description_wrap">  Basement (unfinished) </span><input style="display: none;" max="999999" min="1" name="basement_unfinished_sqft" type="number" placeholder="sqft" /> <span class="or" style="display: none;">or </span><input style="display: none;" max="999999" min="1" name="basement_unfinished_sqm" type="number" placeholder="sqm" /></label>
+                        <div class="description"></div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+        <div id="appliances">
+            <fieldset>
+                <legend>Appliances</legend>
+                <div class="relative">
+                    <label><input name="range" type="checkbox" /><span class="description_wrap">  Range </span><input style="display: none;" max="999999" min="1" name="range_input" type="number" placeholder="watts" /></label>
+                    <div class="description">
+                        <div>Always requires an electric range outlet. Typical range 7000 - 9000 watts.</div>
+                    </div>
+                </div>
+                <div class="relative">
+
+                    <label><input name="2nd_range" type="checkbox" /><span class="description_wrap">  2nd Range </span><input style="display: none;" max="999999" min="1" name="2nd_range_input" type="number" placeholder="watts" /></label>
+                    <div class="description">
+                        <div>Typical range 7000 - 9000 watts.</div>
+                    </div>
+                </div>
+                <div class="relative">
+
+                    <label><input name="dryer" type="checkbox" /><span class="description_wrap">  Dryer </span><input style="display: none;" max="999999" min="1" name="dryer_input" type="number" placeholder="watts" /></label>
+                    <div class="description">
+                        <div>Typical dryer 4000 - 5000 watts.</div>
+                    </div>
+                </div>
+                <div class="relative">
+
+                    <label><input name="water_heater" type="checkbox" /><span class="description_wrap">  Electric water heater </span><input style="display: none;" max="999999" min="1" name="water_heater_input" type="number" placeholder="watts" /></label>
+                    <div class="description">
+                        <div>Typical electric water heater 3000 - 4000 watts.</div>
+                    </div>
+                </div>
+                <div class="relative">
+
+                    <label><input name="tankless_water_heater" type="checkbox" /><span class="description_wrap">  Tankless electric water heater </span><input style="display: none;" max="999999" min="1" name="tankless_water_heater_input" type="number" placeholder="watts" /></label>
+                    <div class="description"></div>
+                </div>
+            </fieldset>
+        </div>
+        <div id="additional_appliances">
+            <fieldset>
+                <legend>Additional Appliances</legend>
+                <div class="relative">
+
+                    <label><input name="sauna" type="checkbox" /><span class="description_wrap">  Sauna </span><input style="display: none;" max="999999" min="1" name="sauna_input" type="number" placeholder="watts" /></label>
+                    <div class="description"></div>
+                </div>
+                <div class="relative">
+
+                    <label><input name="baseboard_heating" type="checkbox" /><span class="description_wrap">  Electric Baseboard Heating </span><input style="display: none;" max="999999" min="1" name="baseboard_heating_input" type="number" placeholder="watts" /></label>
+                    <div class="description"></div>
+                </div>
+                <div class="relative">
+
+                    <label><input name="air_furnace" type="checkbox" /><span class="description_wrap">  Electric Hot Air Furnace </span><input style="display: none;" max="999999" min="1" name="air_furnace_input" type="number" placeholder="watts" /></label>
+                    <div class="description"></div>
+                </div>
+                <div class="relative">
+
+                    <label><input name="air_conditioning" type="checkbox" /><span class="description_wrap">  Air Conditioning </span><input style="display: none;" max="999999" min="1" name="air_conditioning_input" type="number" placeholder="watts" /></label>
+                    <div class="description">
+                        <div>Typical air conditioning 4000 - 6000 watts.</div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+        <div id="heavy_appliances">
+            <fieldset>
+                <legend>Heavy Appliances</legend>
+                <div class="relative">
+
+                    <label><input name="heavy_appliances" type="checkbox" /><span class="description_wrap">  Heavy Appliances </span><input style="display: none;" max="999999" min="1" name="heavy_appliances_input" type="number" placeholder="watts" /></label>
+                    <div class="description">
+                        <div>Hot tub, floor heating system, snow melting system, etc...</div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+        <button id="calculate_button" type="button">calculate</button>
+        <div style="display: none;">
+            <div class="g-recaptcha" data-sitekey="6LcBnBYTAAAAAHl4CKk6jSbFfHIk7o4XKsQjeWwn"></div>
+            <input type="email" placeholder="email" /> <button id="send_report" type="button">send report to email</button>
+        </div>
+    </form>
+    <div class="report">
+        <div class="head" style="font-family: Tahoma; font-size: 25px;"></div>
+        <div class="body" style="font-family: monospace;font-size:12px;"></div>
+        <div class="foot" style="font-size:16px;"></div>
+    </div>
+
+</body>
+</html>
